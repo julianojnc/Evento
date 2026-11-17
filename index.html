@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evento Facom - Inscrição Oficial</title>
+  <meta name="description" content="Página oficial de inscrição de equipes de futebol e duplas de dominó para o Evento Facom.">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230f172a'/><text x='50%' y='68%' font-size='60' font-weight='800' fill='white' text-anchor='middle'>F</text></svg>">
+</head>
+<body>
+
+  <!-- HEADER EXCLUSIVO DE CADASTRO (SEM LINKS PARA OUTRAS TELAS) -->
+  <header class="site-header">
+    <div class="header-inner" style="justify-content: center; text-align: center;">
+      <div class="brand">
+        <div class="brand-icon">F</div>
+        <div class="brand-text">
+          <h1>Evento Facom</h1>
+          <p>Inscrição Oficial de Participantes</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL: APENAS O CADASTRO -->
+  <main class="app-container" style="max-width: 680px; padding-top: 2.5rem;">
+
+    <!-- TELA DE SUCESSO (Exibida após cadastrar) -->
+    <div id="cadastro-success-card" class="form-card" style="display: none; text-align: center; padding: 2.5rem 1.75rem;">
+      <div style="font-size: 3rem; margin-bottom: 0.75rem;">✅</div>
+      <h2 style="font-size: 1.4rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;" id="success-title">Inscrição Confirmada!</h2>
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;" id="success-message">Sua inscrição foi gravada com sucesso para o Evento Facom.</p>
+
+      <div id="success-details" style="background: var(--bg-subtle); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.75rem; text-align: left; font-size: 0.88rem;">
+        <!-- Inserido dinamicamente -->
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+        <button type="button" class="btn btn-primary" id="btn-nova-inscricao">
+          Fazer Outra Inscrição
+        </button>
+        <button type="button" class="btn btn-outline" id="btn-download-dados-json" title="Baixar dados.json atualizado para o repositório">
+          Baixar dados.json
+        </button>
+      </div>
+    </div>
+
+    <!-- CONTAINER DOS FORMULÁRIOS DE CADASTRO -->
+    <div id="cadastro-form-wrapper">
+
+      <!-- Alternador de Modalidade -->
+      <div class="modality-toggle-wrapper">
+        <div class="modality-toggle" role="group" aria-label="Escolha a Modalidade">
+          <button type="button" class="modality-btn active" id="btn-select-fut">
+            ⚽ Equipe de Futebol
+          </button>
+          <button type="button" class="modality-btn" id="btn-select-dom">
+            🁣 Dupla de Dominó
+          </button>
+        </div>
+      </div>
+
+      <!-- FORMULÁRIO FUTEBOL -->
+      <div class="form-card" id="form-container-futebol">
+        <div class="form-header">
+          <h2>Inscrição • Futebol</h2>
+          <p>Informe o nome da equipe, capitão e a relação de atletas.</p>
+        </div>
+
+        <form id="form-futebol">
+          <div class="form-grid">
+            <div class="form-group col-full">
+              <label class="form-label" for="fut-nome">Nome da Equipe <span class="required">*</span></label>
+              <input type="text" id="fut-nome" class="form-control" placeholder="Ex: Engenharia FC, Galácticos..." required>
+            </div>
+
+            <div class="form-group col-full">
+              <label class="form-label" for="fut-capitao">Capitão / Responsável <span class="required">*</span></label>
+              <input type="text" id="fut-capitao" class="form-control" placeholder="Nome do capitão da equipe" required>
+            </div>
+
+            <div class="form-group col-full">
+              <label class="form-label" for="fut-jogadores">
+                Lista de Atletas (1 por linha)
+                <span id="fut-player-count" style="color: var(--text-muted); font-weight: 500; margin-left: 0.35rem;">(0 atletas)</span>
+              </label>
+              <textarea id="fut-jogadores" class="form-control" placeholder="Digite os nomes dos atletas (um por linha):&#10;Carlos Silva&#10;Marcos Souza&#10;Lucas Lima..."></textarea>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="reset" class="btn btn-ghost">Limpar</button>
+            <button type="submit" class="btn btn-primary">
+              Confirmar Inscrição de Futebol
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- FORMULÁRIO DOMINÓ -->
+      <div class="form-card" id="form-container-domino" style="display: none;">
+        <div class="form-header">
+          <h2>Inscrição • Dominó</h2>
+          <p>Cadastre a dupla de competidores para o torneio de dominó.</p>
+        </div>
+
+        <form id="form-domino">
+          <div class="form-grid">
+            <div class="form-group col-full">
+              <label class="form-label" for="dom-nome">Nome da Dupla <span class="required">*</span></label>
+              <input type="text" id="dom-nome" class="form-control" placeholder="Ex: Bucho de Sena, Caras de Pau..." required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="dom-jog1">Jogador 1 <span class="required">*</span></label>
+              <input type="text" id="dom-jog1" class="form-control" placeholder="Nome do jogador 1" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="dom-jog2">Jogador 2 <span class="required">*</span></label>
+              <input type="text" id="dom-jog2" class="form-control" placeholder="Nome do jogador 2" required>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="reset" class="btn btn-ghost">Limpar</button>
+            <button type="submit" class="btn btn-primary">
+              Confirmar Inscrição de Dominó
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- NOTIFICAÇÕES (TOAST) -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- SCRIPTS -->
+  <script src="js/storage.js"></script>
+  <script src="js/cadastro.js"></script>
+</body>
+</html>

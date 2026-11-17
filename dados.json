@@ -1,0 +1,176 @@
+{
+  "evento": "Evento Facom",
+  "versao": "1.0",
+  "ultimaAtualizacao": "2026-11-17T15:30:00.000Z",
+  "futebol": {
+    "equipes": [
+      {
+        "id": "fut-1",
+        "nome": "Engenharia FC",
+        "capitao": "Carlos Eduardo",
+        "jogadores": [
+          "Carlos Eduardo",
+          "Marcos Santos",
+          "Lucas Lima",
+          "Gabriel Souza",
+          "Rafael Dias",
+          "Bruno Henrique"
+        ],
+        "dataCadastro": "2026-11-17T14:00:00.000Z"
+      },
+      {
+        "id": "fut-2",
+        "nome": "Operações & Obras",
+        "capitao": "Marcelo Vieira",
+        "jogadores": [
+          "Marcelo Vieira",
+          "Thiago Silva",
+          "Rodrigo Caio",
+          "Danilo Neves",
+          "Alexandre Pato"
+        ],
+        "dataCadastro": "2026-11-17T14:05:00.000Z"
+      },
+      {
+        "id": "fut-3",
+        "nome": "Galácticos Facom",
+        "capitao": "Fernando Rocha",
+        "jogadores": [
+          "Fernando Rocha",
+          "Gustavo Scarpa",
+          "Renan Lodi",
+          "Matheus Cunha",
+          "Artur Victor"
+        ],
+        "dataCadastro": "2026-11-17T14:10:00.000Z"
+      },
+      {
+        "id": "fut-4",
+        "nome": "Planejamento City",
+        "capitao": "Diego Alves",
+        "jogadores": [
+          "Diego Alves",
+          "Júlio César",
+          "Everton Ribeiro",
+          "Pedro Rocha",
+          "Gerson Santos"
+        ],
+        "dataCadastro": "2026-11-17T14:15:00.000Z"
+      },
+      {
+        "id": "fut-5",
+        "nome": "Logística United",
+        "capitao": "Robson Lima",
+        "jogadores": [
+          "Robson Lima",
+          "Igor Rabello",
+          "Douglas Santos",
+          "Otávio Monteiro",
+          "Luan Peres"
+        ],
+        "dataCadastro": "2026-11-17T14:20:00.000Z"
+      },
+      {
+        "id": "fut-6",
+        "nome": "Financeiro EC",
+        "capitao": "Wesley Snipes",
+        "jogadores": [
+          "Wesley Snipes",
+          "Bebeto Silva",
+          "Romário Souza",
+          "Vampeta Oliveira",
+          "Edilson Capetinha"
+        ],
+        "dataCadastro": "2026-11-17T14:25:00.000Z"
+      },
+      {
+        "id": "fut-7",
+        "nome": "Diretoria FC",
+        "capitao": "Henrique Fogaça",
+        "jogadores": [
+          "Henrique Fogaça",
+          "Érick Jacquin",
+          "Claude Troisgros",
+          "Rodrigo Hilbert",
+          "Felipe Bronze"
+        ],
+        "dataCadastro": "2026-11-17T14:30:00.000Z"
+      },
+      {
+        "id": "fut-8",
+        "nome": "Amigos do Churrasco",
+        "capitao": "Zezinho Gás",
+        "jogadores": [
+          "Zezinho Gás",
+          "Tião Carreiro",
+          "Pardinho Silva",
+          "Chitãozinho",
+          "Xororó"
+        ],
+        "dataCadastro": "2026-11-17T14:35:00.000Z"
+      }
+    ],
+    "chaveamento": null
+  },
+  "domino": {
+    "duplas": [
+      {
+        "id": "dom-1",
+        "nomeDupla": "Bucho de Sena",
+        "jogador1": "Seu Zé",
+        "jogador2": "Tonho",
+        "dataCadastro": "2026-11-17T14:00:00.000Z"
+      },
+      {
+        "id": "dom-2",
+        "nomeDupla": "Caras de Pau",
+        "jogador1": "Moacir",
+        "jogador2": "Valdir",
+        "dataCadastro": "2026-11-17T14:05:00.000Z"
+      },
+      {
+        "id": "dom-3",
+        "nomeDupla": "Mestres da Carroça",
+        "jogador1": "Geraldo",
+        "jogador2": "Beto",
+        "dataCadastro": "2026-11-17T14:10:00.000Z"
+      },
+      {
+        "id": "dom-4",
+        "nomeDupla": "Bateu Levou",
+        "jogador1": "Cláudio",
+        "jogador2": "Djalma",
+        "dataCadastro": "2026-11-17T14:15:00.000Z"
+      },
+      {
+        "id": "dom-5",
+        "nomeDupla": "Ases da Pedra",
+        "jogador1": "Juvenal",
+        "jogador2": "Arnaldo",
+        "dataCadastro": "2026-11-17T14:20:00.000Z"
+      },
+      {
+        "id": "dom-6",
+        "nomeDupla": "Toca do Tatu",
+        "jogador1": "Tião",
+        "jogador2": "Chicão",
+        "dataCadastro": "2026-11-17T14:25:00.000Z"
+      },
+      {
+        "id": "dom-7",
+        "nomeDupla": "Sem Choro",
+        "jogador1": "Marcos",
+        "jogador2": "Ailton",
+        "dataCadastro": "2026-11-17T14:30:00.000Z"
+      },
+      {
+        "id": "dom-8",
+        "nomeDupla": "Reis do Dominó",
+        "jogador1": "Nelson",
+        "jogador2": "Sebastião",
+        "dataCadastro": "2026-11-17T14:35:00.000Z"
+      }
+    ],
+    "chaveamento": null
+  }
+}
