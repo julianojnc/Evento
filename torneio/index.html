@@ -195,12 +195,15 @@
               URL do dados.json no GitHub (Raw)
             </label>
             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-              <input type="url" id="input-github-url" class="form-control" style="flex: 1; min-width: 220px;" placeholder="https://raw.githubusercontent.com/.../dados.json">
-              <button class="btn btn-primary btn-sm" id="btn-sync-github">
+              <input type="url" id="input-github-url" class="form-control" style="flex: 1; min-width: 220px;" placeholder="https://raw.githubusercontent.com/julianojnc/Evento/main/dados.json">
+              <button class="btn btn-outline btn-sm" id="btn-sync-github">
                 Consumir do GitHub
               </button>
+              <button class="btn btn-primary btn-sm" id="btn-push-github" title="Comita os dados e chaveamentos atuais no GitHub">
+                Gravar Chaveamento no GitHub
+              </button>
             </div>
-            <div class="form-help">Insira a URL Raw do seu repositório para carregar os dados atualizados.</div>
+            <div class="form-help">Consuma os cadastros recebidos no GitHub ou salve o chaveamento atual direto no repositório.</div>
           </div>
 
           <div class="backup-actions-list">

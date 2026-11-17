@@ -71,22 +71,33 @@ const App = {
       btnDomReset.addEventListener('click', () => this.resetBracket('domino'));
     }
 
-    // Sincronização com GitHub
+    // Sincronização com GitHub (Consumir)
     const inputGithubUrl = document.getElementById('input-github-url');
     const btnSyncGithub = document.getElementById('btn-sync-github');
     if (inputGithubUrl) {
-      inputGithubUrl.value = StorageManager.getGitHubUrl();
+      inputGithubUrl.value = StorageManager.getGitHubUrl() || 'https://raw.githubusercontent.com/julianojnc/Evento/main/dados.json';
     }
     if (btnSyncGithub && inputGithubUrl) {
       btnSyncGithub.addEventListener('click', async () => {
         const url = inputGithubUrl.value.trim();
-        if (!url) {
-          this.showToast('Por favor, informe a URL Raw do dados.json no GitHub.', 'error');
-          return;
-        }
         btnSyncGithub.disabled = true;
         btnSyncGithub.textContent = 'Carregando...';
-        const res = await StorageManager.fetchFromGitHubOrLocal(url);
+        
+        // Tentar via API primeiro (para evitar cache do GitHub Raw)
+        let res = null;
+        try {
+          const apiRes = await fetch('/api/cadastrar');
+          if (apiRes.ok) {
+            const apiJson = await apiRes.json();
+            res = StorageManager.importFromJSON(JSON.stringify(apiJson));
+          }
+        } catch (e) {}
+
+        // Fallback para URL Raw se a API local/token não retornar
+        if (!res || !res.success) {
+          res = await StorageManager.fetchFromGitHubOrLocal(url);
+        }
+
         btnSyncGithub.disabled = false;
         btnSyncGithub.textContent = 'Consumir do GitHub';
 
@@ -95,6 +106,35 @@ const App = {
           this.showToast(`dados.json sincronizado com sucesso do GitHub! (${res.countFut} times, ${res.countDom} duplas)`, 'success');
         } else {
           this.showToast(`Falha ao sincronizar: ${res.error}`, 'error');
+        }
+      });
+    }
+
+    // Gravar dados completos no GitHub
+    const btnPushGithub = document.getElementById('btn-push-github');
+    if (btnPushGithub) {
+      btnPushGithub.addEventListener('click', async () => {
+        if (!confirm('Deseja salvar e comitar o estado atual dos chaveamentos e equipes diretamente no GitHub?')) return;
+        btnPushGithub.disabled = true;
+        btnPushGithub.textContent = 'Gravando no GitHub...';
+        try {
+          const fullData = StorageManager.loadData();
+          const res = await fetch('/api/cadastrar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fullData })
+          });
+          const json = await res.json();
+          if (res.ok && json.success) {
+            this.showToast('Chaveamento e dados comitados no GitHub com sucesso!', 'success');
+          } else {
+            this.showToast(`Erro ao gravar no GitHub: ${json.message || 'Verifique o GITHUB_TOKEN na Vercel'}`, 'error');
+          }
+        } catch (err) {
+          this.showToast(`Erro de rede: ${err.message}`, 'error');
+        } finally {
+          btnPushGithub.disabled = false;
+          btnPushGithub.textContent = 'Gravar Chaveamento no GitHub';
         }
       });
     }

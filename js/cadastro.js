@@ -1,6 +1,6 @@
 /**
  * EVENTO FACOM - SCRIPT DA PÁGINA DE CADASTRO (CADASTRO.JS)
- * Gerencia a inscrição pública e isolada, sem acesso a outras telas.
+ * Envia os cadastros diretamente para a API Serverless da Vercel para gravar no GitHub.
  */
 
 const CadastroApp = {
@@ -78,10 +78,11 @@ const CadastroApp = {
     }
   },
 
-  handleFootballSubmit() {
+  async handleFootballSubmit() {
     const nome = document.getElementById('fut-nome').value.trim();
     const capitao = document.getElementById('fut-capitao').value.trim();
     const jogadoresRaw = document.getElementById('fut-jogadores').value;
+    const submitBtn = document.querySelector('#form-futebol button[type="submit"]');
 
     if (!nome || !capitao) {
       this.showToast('Por favor, preencha o Nome da Equipe e o Capitão.', 'error');
@@ -93,64 +94,111 @@ const CadastroApp = {
       .map(j => j.trim())
       .filter(j => j.length > 0);
 
-    const data = StorageManager.loadData();
-    const exists = data.futebol.equipes.some(e => e.nome.toLowerCase() === nome.toLowerCase());
-    if (exists) {
-      this.showToast('Já existe uma equipe de futebol com esse nome.', 'error');
-      return;
-    }
-
-    StorageManager.addEntry('futebol', {
+    const item = {
       nome,
       capitao,
       jogadores: jogadores.length > 0 ? jogadores : [capitao]
-    });
+    };
 
-    document.getElementById('form-futebol').reset();
-    document.getElementById('fut-player-count').textContent = '(0 atletas)';
+    // Estado de carregamento
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = 'Enviando para o repositório...';
 
-    this.showSuccessCard('Futebol', nome, [
-      `<strong>Capitão:</strong> ${this.escapeHtml(capitao)}`,
-      `<strong>Total de Atletas:</strong> ${jogadores.length > 0 ? jogadores.length : 1} inscritos`
-    ]);
+    try {
+      const apiSuccess = await this.sendToGitHubApi('futebol', item);
+
+      // Salva localmente também para manter sincronizado
+      StorageManager.addEntry('futebol', item);
+
+      document.getElementById('form-futebol').reset();
+      document.getElementById('fut-player-count').textContent = '(0 atletas)';
+
+      this.showSuccessCard('Futebol', nome, [
+        `<strong>Capitão:</strong> ${this.escapeHtml(capitao)}`,
+        `<strong>Total de Atletas:</strong> ${jogadores.length > 0 ? jogadores.length : 1} inscritos`,
+        apiSuccess ? `<span style="color: #10b981; font-weight: 600;">✓ Gravado com sucesso no dados.json do GitHub</span>` : `<span style="color: #f59e0b;">Salvo localmente (configure o token na Vercel para commit automático)</span>`
+      ]);
+    } catch (err) {
+      this.showToast(`Erro ao gravar: ${err.message}`, 'error');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Confirmar Inscrição de Futebol';
+    }
   },
 
-  handleDominoSubmit() {
+  async handleDominoSubmit() {
     const nomeDupla = document.getElementById('dom-nome').value.trim();
     const jogador1 = document.getElementById('dom-jog1').value.trim();
     const jogador2 = document.getElementById('dom-jog2').value.trim();
+    const submitBtn = document.querySelector('#form-domino button[type="submit"]');
 
     if (!nomeDupla || !jogador1 || !jogador2) {
       this.showToast('Preencha o Nome da Dupla e ambos os jogadores.', 'error');
       return;
     }
 
-    const data = StorageManager.loadData();
-    const exists = data.domino.duplas.some(d => d.nomeDupla.toLowerCase() === nomeDupla.toLowerCase());
-    if (exists) {
-      this.showToast('Já existe uma dupla cadastrada com esse nome.', 'error');
-      return;
-    }
-
-    StorageManager.addEntry('domino', {
+    const item = {
       nomeDupla,
       jogador1,
       jogador2
-    });
+    };
 
-    document.getElementById('form-domino').reset();
+    // Estado de carregamento
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = 'Enviando para o repositório...';
 
-    this.showSuccessCard('Dominó', nomeDupla, [
-      `<strong>Jogador 1:</strong> ${this.escapeHtml(jogador1)}`,
-      `<strong>Jogador 2:</strong> ${this.escapeHtml(jogador2)}`
-    ]);
+    try {
+      const apiSuccess = await this.sendToGitHubApi('domino', item);
+
+      // Salva localmente também
+      StorageManager.addEntry('domino', item);
+
+      document.getElementById('form-domino').reset();
+
+      this.showSuccessCard('Dominó', nomeDupla, [
+        `<strong>Jogador 1:</strong> ${this.escapeHtml(jogador1)}`,
+        `<strong>Jogador 2:</strong> ${this.escapeHtml(jogador2)}`,
+        apiSuccess ? `<span style="color: #10b981; font-weight: 600;">✓ Gravado com sucesso no dados.json do GitHub</span>` : `<span style="color: #f59e0b;">Salvo localmente (configure o token na Vercel para commit automático)</span>`
+      ]);
+    } catch (err) {
+      this.showToast(`Erro ao gravar: ${err.message}`, 'error');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Confirmar Inscrição de Dominó';
+    }
+  },
+
+  // Chamada à API Serverless da Vercel para gravar no repositório GitHub
+  async sendToGitHubApi(tipo, item) {
+    try {
+      const res = await fetch('/api/cadastrar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tipo, item })
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        console.warn('API Vercel avisou:', errorData);
+        if (errorData.error === 'GITHUB_TOKEN_MISSING') {
+          this.showToast('Inscrição salva! (Falta configurar GITHUB_TOKEN na Vercel)', 'info');
+        }
+        return false;
+      }
+
+      const json = await res.json();
+      return json.success === true;
+    } catch (err) {
+      console.warn('API não acessível (provavelmente rodando fora da Vercel):', err);
+      return false;
+    }
   },
 
   showSuccessCard(modalidade, nome, detalhes) {
     document.getElementById('cadastro-form-wrapper').style.display = 'none';
     const card = document.getElementById('cadastro-success-card');
     document.getElementById('success-title').textContent = `Inscrição Confirmada (${modalidade})!`;
-    document.getElementById('success-message').textContent = `"${nome}" foi inscrita com sucesso no Evento Facom.`;
+    document.getElementById('success-message').textContent = `"${nome}" foi cadastrada para o Evento Facom.`;
 
     const detailsBox = document.getElementById('success-details');
     detailsBox.innerHTML = `
@@ -160,7 +208,7 @@ const CadastroApp = {
 
     card.style.display = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    this.showToast('Inscrição salva com sucesso!', 'success');
+    this.showToast('Inscrição confirmada com sucesso!', 'success');
   },
 
   showToast(message, type = 'info') {
@@ -181,7 +229,7 @@ const CadastroApp = {
       toast.style.transform = 'translateX(100%)';
       toast.style.transition = 'all 0.25s ease';
       setTimeout(() => toast.remove(), 250);
-    }, 3200);
+    }, 3500);
   },
 
   escapeHtml(str) {
