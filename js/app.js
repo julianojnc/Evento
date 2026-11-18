@@ -1,6 +1,6 @@
 /**
  * EVENTO FACOM - GESTÃO DO TORNEIO (APP.JS)
- * Orquestração das telas de Participantes, Chaveamentos (Futebol/Dominó) e JSON.
+ * Consome e alimenta os dados diretamente pela API REST /api/dados (dados.json)
  */
 
 const App = {
@@ -12,6 +12,40 @@ const App = {
   init() {
     this.bindEvents();
     this.refreshAll();
+    // Consumir da API ao abrir a tela
+    this.syncWithApi(true);
+  },
+
+  // Sincronizar com a API REST
+  async syncWithApi(silent = false) {
+    const dot = document.getElementById('api-status-dot');
+    const text = document.getElementById('api-status-text');
+    if (dot) dot.style.background = '#f59e0b';
+    if (text) text.textContent = 'Sincronizando...';
+
+    const res = await StorageManager.fetchApi();
+    this.refreshAll();
+
+    if (res.fromApi) {
+      if (dot) dot.style.background = '#10b981';
+      if (text) text.textContent = 'API Conectada';
+      if (!silent) this.showToast('Dados atualizados da API (dados.json)!', 'success');
+    } else {
+      if (dot) dot.style.background = '#94a3b8';
+      if (text) text.textContent = 'Cache Local';
+      if (!silent) this.showToast('Usando cache local (API offline ou sem token)', 'info');
+    }
+  },
+
+  // Enviar estado completo para a API
+  async saveFullToApi() {
+    const fullData = StorageManager.loadData();
+    const res = await StorageManager.syncAllToApi(fullData);
+    if (res.success) {
+      this.showToast('Estado completo comitado no GitHub com sucesso!', 'success');
+    } else {
+      this.showToast(`Erro ao gravar na API: ${res.error}`, 'error');
+    }
   },
 
   // Vinculação de eventos do DOM
@@ -71,75 +105,27 @@ const App = {
       btnDomReset.addEventListener('click', () => this.resetBracket('domino'));
     }
 
-    // Sincronização com GitHub (Consumir)
-    const inputGithubUrl = document.getElementById('input-github-url');
-    const btnSyncGithub = document.getElementById('btn-sync-github');
-    if (inputGithubUrl) {
-      inputGithubUrl.value = StorageManager.getGitHubUrl() || 'https://raw.githubusercontent.com/julianojnc/Evento/main/dados.json';
+    // Botões de Sincronização / Consumo com a API
+    const btnRefreshApi = document.getElementById('btn-refresh-api');
+    if (btnRefreshApi) {
+      btnRefreshApi.addEventListener('click', () => this.syncWithApi(false));
     }
-    if (btnSyncGithub && inputGithubUrl) {
-      btnSyncGithub.addEventListener('click', async () => {
-        const url = inputGithubUrl.value.trim();
-        btnSyncGithub.disabled = true;
-        btnSyncGithub.textContent = 'Carregando...';
-        
-        // Tentar via API primeiro (para evitar cache do GitHub Raw)
-        let res = null;
-        try {
-          const apiRes = await fetch('/api/cadastrar');
-          if (apiRes.ok) {
-            const apiJson = await apiRes.json();
-            res = StorageManager.importFromJSON(JSON.stringify(apiJson));
-          }
-        } catch (e) {}
-
-        // Fallback para URL Raw se a API local/token não retornar
-        if (!res || !res.success) {
-          res = await StorageManager.fetchFromGitHubOrLocal(url);
-        }
-
-        btnSyncGithub.disabled = false;
-        btnSyncGithub.textContent = 'Consumir do GitHub';
-
-        if (res.success) {
-          this.refreshAll();
-          this.showToast(`dados.json sincronizado com sucesso do GitHub! (${res.countFut} times, ${res.countDom} duplas)`, 'success');
-        } else {
-          this.showToast(`Falha ao sincronizar: ${res.error}`, 'error');
-        }
-      });
+    const btnReloadApi = document.getElementById('btn-reload-api');
+    if (btnReloadApi) {
+      btnReloadApi.addEventListener('click', () => this.syncWithApi(false));
     }
 
-    // Gravar dados completos no GitHub
-    const btnPushGithub = document.getElementById('btn-push-github');
-    if (btnPushGithub) {
-      btnPushGithub.addEventListener('click', async () => {
-        if (!confirm('Deseja salvar e comitar o estado atual dos chaveamentos e equipes diretamente no GitHub?')) return;
-        btnPushGithub.disabled = true;
-        btnPushGithub.textContent = 'Gravando no GitHub...';
-        try {
-          const fullData = StorageManager.loadData();
-          const res = await fetch('/api/cadastrar', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ fullData })
-          });
-          const json = await res.json();
-          if (res.ok && json.success) {
-            this.showToast('Chaveamento e dados comitados no GitHub com sucesso!', 'success');
-          } else {
-            this.showToast(`Erro ao gravar no GitHub: ${json.message || 'Verifique o GITHUB_TOKEN na Vercel'}`, 'error');
-          }
-        } catch (err) {
-          this.showToast(`Erro de rede: ${err.message}`, 'error');
-        } finally {
-          btnPushGithub.disabled = false;
-          btnPushGithub.textContent = 'Gravar Chaveamento no GitHub';
-        }
-      });
+    // Botões de Salvar Estado na API (Comitar no GitHub)
+    const btnPushApi = document.getElementById('btn-push-api');
+    if (btnPushApi) {
+      btnPushApi.addEventListener('click', () => this.saveFullToApi());
+    }
+    const btnSaveApiFull = document.getElementById('btn-save-api-full');
+    if (btnSaveApiFull) {
+      btnSaveApiFull.addEventListener('click', () => this.saveFullToApi());
     }
 
-    // Ações de Backup & JSON
+    // Download de cópia local do dados.json
     const btnExportJson = document.getElementById('btn-export-json');
     if (btnExportJson) {
       btnExportJson.addEventListener('click', () => {
@@ -147,15 +133,8 @@ const App = {
         this.showToast('dados.json baixado com sucesso!', 'success');
       });
     }
-    const btnQuickExport = document.getElementById('btn-quick-export');
-    if (btnQuickExport) {
-      btnQuickExport.addEventListener('click', () => {
-        StorageManager.exportToJSONFile();
-        this.showToast('dados.json baixado com sucesso!', 'success');
-      });
-    }
 
-    // Importação de arquivo JSON
+    // Importação de arquivo JSON para restauração manual
     const fileInput = document.getElementById('input-import-file');
     const btnTriggerImport = document.getElementById('btn-trigger-import');
     if (fileInput && btnTriggerImport) {
@@ -169,11 +148,12 @@ const App = {
         if (!file) return;
 
         const reader = new FileReader();
-        reader.onload = (event) => {
+        reader.onload = async (event) => {
           const result = StorageManager.importFromJSON(event.target.result);
           if (result.success) {
             this.refreshAll();
-            this.showToast(`Dados importados! (${result.countFut} times, ${result.countDom} duplas)`, 'success');
+            this.showToast(`Dados importados! Sincronizando com a API...`, 'info');
+            await this.saveFullToApi();
           } else {
             this.showToast(`Erro ao importar: ${result.error}`, 'error');
           }
@@ -181,19 +161,6 @@ const App = {
         reader.readAsText(file);
       });
     }
-
-    // Carregar dados de teste
-    const handleSampleLoad = () => {
-      if (confirm('Deseja carregar 8 equipes de futebol e 8 duplas de dominó para demonstração?')) {
-        StorageManager.loadSampleData();
-        this.refreshAll();
-        this.showToast('8 equipes e 8 duplas de teste carregadas com sucesso!', 'success');
-      }
-    };
-    const btnSeedSample = document.getElementById('btn-seed-sample');
-    if (btnSeedSample) btnSeedSample.addEventListener('click', handleSampleLoad);
-    const btnQuickSample = document.getElementById('btn-quick-sample');
-    if (btnQuickSample) btnQuickSample.addEventListener('click', handleSampleLoad);
 
     // Copiar JSON
     const btnCopyJson = document.getElementById('btn-copy-json');
@@ -211,11 +178,12 @@ const App = {
     // Zerar todos os dados
     const btnClearAll = document.getElementById('btn-clear-all');
     if (btnClearAll) {
-      btnClearAll.addEventListener('click', () => {
-        if (confirm('ATENÇÃO: Deseja realmente excluir todas as equipes, duplas e chaveamentos? Esta ação não pode ser desfeita.')) {
-          StorageManager.clearAll();
+      btnClearAll.addEventListener('click', async () => {
+        if (confirm('ATENÇÃO: Deseja realmente excluir todas as equipes, duplas e chaveamentos? Esta alteração será enviada à API.')) {
+          const empty = StorageManager.clearAll();
           this.refreshAll();
-          this.showToast('Todos os dados foram resetados.', 'info');
+          await this.saveFullToApi();
+          this.showToast('Todos os dados foram resetados na API.', 'info');
         }
       });
     }
@@ -262,8 +230,8 @@ const App = {
   // Atualizar contadores e visualizações gerais
   refreshAll() {
     const data = StorageManager.loadData();
-    const futCount = data.futebol.equipes.length;
-    const domCount = data.domino.duplas.length;
+    const futCount = data.futebol?.equipes?.length || 0;
+    const domCount = data.domino?.duplas?.length || 0;
     const totalCount = futCount + domCount;
 
     // Badges no Header
@@ -308,10 +276,10 @@ const App = {
     let items = [];
 
     if (this.participantFilter === 'all' || this.participantFilter === 'futebol') {
-      items.push(...data.futebol.equipes.map(e => ({ ...e, tipo: 'futebol' })));
+      items.push(...(data.futebol?.equipes || []).map(e => ({ ...e, tipo: 'futebol' })));
     }
     if (this.participantFilter === 'all' || this.participantFilter === 'domino') {
-      items.push(...data.domino.duplas.map(d => ({ ...d, tipo: 'domino' })));
+      items.push(...(data.domino?.duplas || []).map(d => ({ ...d, tipo: 'domino' })));
     }
 
     // Filtrar por busca textual
@@ -339,8 +307,8 @@ const App = {
         <div class="empty-state" style="grid-column: 1 / -1;">
           <div class="empty-state-icon">📋</div>
           <h3>Nenhum participante encontrado</h3>
-          <p>Cadastre novas equipes de futebol ou duplas de dominó para o Evento Facom.</p>
-          <a href="index.html" class="btn btn-primary">Fazer Inscrição</a>
+          <p>Os participantes cadastrados pela página inicial aparecerão aqui via API.</p>
+          <button class="btn btn-outline" onclick="App.syncWithApi(false)">Atualizar da API</button>
         </div>
       `;
       return;
@@ -410,13 +378,13 @@ const App = {
     }).join('');
   },
 
-  // Modal de Edição (Sem campos removidos)
+  // Modal de Edição (Envia PUT para a API)
   openEditModal(tipo, id) {
     const data = StorageManager.loadData();
     const isFut = tipo === 'futebol';
     const item = isFut
-      ? data.futebol.equipes.find(e => e.id === id)
-      : data.domino.duplas.find(d => d.id === id);
+      ? data.futebol?.equipes?.find(e => e.id === id)
+      : data.domino?.duplas?.find(d => d.id === id);
 
     if (!item) return;
 
@@ -443,7 +411,7 @@ const App = {
           </div>
           <div class="form-actions">
             <button type="button" class="btn btn-ghost" onclick="App.closeModal()">Cancelar</button>
-            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+            <button type="submit" class="btn btn-primary" id="btn-save-edit">Salvar na API</button>
           </div>
         </form>
       `;
@@ -466,14 +434,18 @@ const App = {
           </div>
           <div class="form-actions">
             <button type="button" class="btn btn-ghost" onclick="App.closeModal()">Cancelar</button>
-            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+            <button type="submit" class="btn btn-primary" id="btn-save-edit">Salvar na API</button>
           </div>
         </form>
       `;
     }
 
-    document.getElementById('form-edit-modal').addEventListener('submit', (e) => {
+    document.getElementById('form-edit-modal').addEventListener('submit', async (e) => {
       e.preventDefault();
+      const saveBtn = document.getElementById('btn-save-edit');
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Gravando...';
+
       if (isFut) {
         const nome = document.getElementById('edit-fut-nome').value.trim();
         const capitao = document.getElementById('edit-fut-capitao').value.trim();
@@ -482,18 +454,18 @@ const App = {
           .map(l => l.trim())
           .filter(l => l.length > 0);
 
-        StorageManager.updateEntry('futebol', id, { nome, capitao, jogadores });
+        await StorageManager.updateEntryApi('futebol', id, { nome, capitao, jogadores });
       } else {
         const nomeDupla = document.getElementById('edit-dom-nome').value.trim();
         const jogador1 = document.getElementById('edit-dom-jog1').value.trim();
         const jogador2 = document.getElementById('edit-dom-jog2').value.trim();
 
-        StorageManager.updateEntry('domino', id, { nomeDupla, jogador1, jogador2 });
+        await StorageManager.updateEntryApi('domino', id, { nomeDupla, jogador1, jogador2 });
       }
 
       this.closeModal();
       this.refreshAll();
-      this.showToast('Alterações salvas com sucesso!', 'success');
+      this.showToast('Alteração gravada na API (dados.json)!', 'success');
     });
 
     document.getElementById('edit-modal').classList.add('active');
@@ -504,19 +476,19 @@ const App = {
     if (modal) modal.classList.remove('active');
   },
 
-  // Exclusão de participante
-  handleDelete(tipo, id, nome) {
-    if (confirm(`Tem certeza que deseja excluir "${nome}"?`)) {
-      StorageManager.deleteEntry(tipo, id);
+  // Exclusão de participante (Envia DELETE para a API)
+  async handleDelete(tipo, id, nome) {
+    if (confirm(`Tem certeza que deseja excluir "${nome}"? Esta remoção será comitada no dados.json da API.`)) {
+      await StorageManager.deleteEntryApi(tipo, id);
       this.refreshAll();
-      this.showToast(`"${nome}" foi removido com sucesso.`, 'info');
+      this.showToast(`"${nome}" foi removido da API.`, 'info');
     }
   },
 
   // Gerar chaveamento
-  generateBracket(tipo, randomize = true) {
+  async generateBracket(tipo, randomize = true) {
     const data = StorageManager.loadData();
-    const participants = tipo === 'futebol' ? data.futebol.equipes : data.domino.duplas;
+    const participants = tipo === 'futebol' ? (data.futebol?.equipes || []) : (data.domino?.duplas || []);
 
     if (!participants || participants.length < 2) {
       this.showToast(`É necessário ter no mínimo 2 participantes em ${tipo === 'futebol' ? 'Futebol' : 'Dominó'}.`, 'error');
@@ -525,22 +497,25 @@ const App = {
 
     try {
       const bracket = BracketEngine.createBracket(participants, randomize);
-      StorageManager.saveBracket(tipo, bracket);
       this.renderBracketView(tipo);
       this.updateJSONViewer();
-      this.showToast(`Chaveamento de ${tipo === 'futebol' ? 'Futebol' : 'Dominó'} gerado com sucesso!`, 'success');
+
+      // Salva na API
+      await StorageManager.saveBracketApi(tipo, bracket);
+      this.showToast(`Chaveamento gerado e comitado no GitHub via API!`, 'success');
     } catch (err) {
       this.showToast(err.message, 'error');
     }
   },
 
   // Limpar chaveamento
-  resetBracket(tipo) {
+  async resetBracket(tipo) {
     if (confirm(`Deseja limpar o chaveamento de ${tipo === 'futebol' ? 'Futebol' : 'Dominó'}? As equipes cadastradas serão mantidas.`)) {
       StorageManager.clearBracket(tipo);
       this.renderBracketView(tipo);
       this.updateJSONViewer();
-      this.showToast('Chaveamento limpo.', 'info');
+      await StorageManager.saveBracketApi(tipo, null);
+      this.showToast('Chaveamento limpo na API.', 'info');
     }
   },
 
@@ -551,15 +526,15 @@ const App = {
     if (!container) return;
 
     const data = StorageManager.loadData();
-    const bracket = tipo === 'futebol' ? data.futebol.chaveamento : data.domino.chaveamento;
-    const participants = tipo === 'futebol' ? data.futebol.equipes : data.domino.duplas;
+    const bracket = tipo === 'futebol' ? data.futebol?.chaveamento : data.domino?.chaveamento;
+    const participants = tipo === 'futebol' ? (data.futebol?.equipes || []) : (data.domino?.duplas || []);
 
     if (!bracket || !bracket.rounds || bracket.rounds.length === 0) {
       container.innerHTML = `
         <div class="empty-state">
           <div class="empty-state-icon">🏆</div>
           <h3>Chaveamento não gerado</h3>
-          <p>Você tem <strong>${participants.length}</strong> ${tipo === 'futebol' ? 'equipes' : 'duplas'} cadastradas. Clique no botão abaixo para gerar o chaveamento do Evento Facom.</p>
+          <p>Você tem <strong>${participants.length}</strong> ${tipo === 'futebol' ? 'equipes' : 'duplas'} cadastradas na API. Clique no botão abaixo para gerar o chaveamento do Evento Facom.</p>
           <button class="btn btn-primary" onclick="App.generateBracket('${tipo}', true)">
             Sortear Chaves Agora
           </button>
@@ -670,16 +645,17 @@ const App = {
     `;
   },
 
-  // Selecionar vencedor da partida
-  handleSetWinner(tipo, roundIndex, matchIndex, teamSlot) {
+  // Selecionar vencedor da partida (Salva na API)
+  async handleSetWinner(tipo, roundIndex, matchIndex, teamSlot) {
     const data = StorageManager.loadData();
-    const bracket = tipo === 'futebol' ? data.futebol.chaveamento : data.domino.chaveamento;
+    const bracket = tipo === 'futebol' ? data.futebol?.chaveamento : data.domino?.chaveamento;
     if (!bracket) return;
 
     const previousChampion = bracket.champion ? bracket.champion.id : null;
     const updatedBracket = BracketEngine.setWinner(bracket, roundIndex, matchIndex, teamSlot);
     if (!updatedBracket) return;
 
+    // Atualiza local e renderiza imediatamente
     StorageManager.saveBracket(tipo, updatedBracket);
     this.renderBracketView(tipo);
     this.updateJSONViewer();
@@ -692,17 +668,23 @@ const App = {
     } else {
       this.showToast(`"${winnerName}" avançou de fase!`, 'info');
     }
+
+    // Comita na API de forma assíncrona
+    await StorageManager.saveBracketApi(tipo, updatedBracket);
   },
 
   // Atualizar placar de uma partida
-  handleScoreChange(tipo, roundIndex, matchIndex, teamSlot, val) {
+  async handleScoreChange(tipo, roundIndex, matchIndex, teamSlot, val) {
     const data = StorageManager.loadData();
-    const bracket = tipo === 'futebol' ? data.futebol.chaveamento : data.domino.chaveamento;
+    const bracket = tipo === 'futebol' ? data.futebol?.chaveamento : data.domino?.chaveamento;
     if (!bracket) return;
 
     BracketEngine.updateScore(bracket, roundIndex, matchIndex, teamSlot, val);
     StorageManager.saveBracket(tipo, bracket);
     this.updateJSONViewer();
+
+    // Comita na API
+    await StorageManager.saveBracketApi(tipo, bracket);
   },
 
   // Atualizar o bloco com o JSON em tempo real

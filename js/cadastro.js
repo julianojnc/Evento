@@ -1,11 +1,13 @@
 /**
  * EVENTO FACOM - SCRIPT DA PÁGINA DE CADASTRO (CADASTRO.JS)
- * Envia os cadastros diretamente para a API Serverless da Vercel para gravar no GitHub.
+ * Envia os cadastros via API REST /api/dados (alimentando o dados.json no GitHub)
  */
 
 const CadastroApp = {
   init() {
     this.bindEvents();
+    // Tenta sincronizar com a API no carregamento
+    StorageManager.fetchApi().catch(() => {});
   },
 
   bindEvents() {
@@ -100,15 +102,11 @@ const CadastroApp = {
       jogadores: jogadores.length > 0 ? jogadores : [capitao]
     };
 
-    // Estado de carregamento
     submitBtn.disabled = true;
-    submitBtn.innerHTML = 'Enviando para o repositório...';
+    submitBtn.innerHTML = 'Enviando para a API...';
 
     try {
-      const apiSuccess = await this.sendToGitHubApi('futebol', item);
-
-      // Salva localmente também para manter sincronizado
-      StorageManager.addEntry('futebol', item);
+      const res = await StorageManager.addEntryApi('futebol', item);
 
       document.getElementById('form-futebol').reset();
       document.getElementById('fut-player-count').textContent = '(0 atletas)';
@@ -116,7 +114,9 @@ const CadastroApp = {
       this.showSuccessCard('Futebol', nome, [
         `<strong>Capitão:</strong> ${this.escapeHtml(capitao)}`,
         `<strong>Total de Atletas:</strong> ${jogadores.length > 0 ? jogadores.length : 1} inscritos`,
-        apiSuccess ? `<span style="color: #10b981; font-weight: 600;">✓ Gravado com sucesso no dados.json do GitHub</span>` : `<span style="color: #f59e0b;">Salvo localmente (configure o token na Vercel para commit automático)</span>`
+        res.comitado
+          ? `<span style="color: #10b981; font-weight: 600;">✓ Inscrição comitada na API (dados.json)</span>`
+          : `<span style="color: #f59e0b;">Salvo localmente (conectando à API...)</span>`
       ]);
     } catch (err) {
       this.showToast(`Erro ao gravar: ${err.message}`, 'error');
@@ -143,22 +143,20 @@ const CadastroApp = {
       jogador2
     };
 
-    // Estado de carregamento
     submitBtn.disabled = true;
-    submitBtn.innerHTML = 'Enviando para o repositório...';
+    submitBtn.innerHTML = 'Enviando para a API...';
 
     try {
-      const apiSuccess = await this.sendToGitHubApi('domino', item);
-
-      // Salva localmente também
-      StorageManager.addEntry('domino', item);
+      const res = await StorageManager.addEntryApi('domino', item);
 
       document.getElementById('form-domino').reset();
 
       this.showSuccessCard('Dominó', nomeDupla, [
         `<strong>Jogador 1:</strong> ${this.escapeHtml(jogador1)}`,
         `<strong>Jogador 2:</strong> ${this.escapeHtml(jogador2)}`,
-        apiSuccess ? `<span style="color: #10b981; font-weight: 600;">✓ Gravado com sucesso no dados.json do GitHub</span>` : `<span style="color: #f59e0b;">Salvo localmente (configure o token na Vercel para commit automático)</span>`
+        res.comitado
+          ? `<span style="color: #10b981; font-weight: 600;">✓ Inscrição comitada na API (dados.json)</span>`
+          : `<span style="color: #f59e0b;">Salvo localmente (conectando à API...)</span>`
       ]);
     } catch (err) {
       this.showToast(`Erro ao gravar: ${err.message}`, 'error');
@@ -168,37 +166,11 @@ const CadastroApp = {
     }
   },
 
-  // Chamada à API Serverless da Vercel para gravar no repositório GitHub
-  async sendToGitHubApi(tipo, item) {
-    try {
-      const res = await fetch('/api/cadastrar', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tipo, item })
-      });
-
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        console.warn('API Vercel avisou:', errorData);
-        if (errorData.error === 'GITHUB_TOKEN_MISSING') {
-          this.showToast('Inscrição salva! (Falta configurar GITHUB_TOKEN na Vercel)', 'info');
-        }
-        return false;
-      }
-
-      const json = await res.json();
-      return json.success === true;
-    } catch (err) {
-      console.warn('API não acessível (provavelmente rodando fora da Vercel):', err);
-      return false;
-    }
-  },
-
   showSuccessCard(modalidade, nome, detalhes) {
     document.getElementById('cadastro-form-wrapper').style.display = 'none';
     const card = document.getElementById('cadastro-success-card');
     document.getElementById('success-title').textContent = `Inscrição Confirmada (${modalidade})!`;
-    document.getElementById('success-message').textContent = `"${nome}" foi cadastrada para o Evento Facom.`;
+    document.getElementById('success-message').textContent = `"${nome}" foi cadastrada com sucesso no Evento Facom.`;
 
     const detailsBox = document.getElementById('success-details');
     detailsBox.innerHTML = `
@@ -208,7 +180,7 @@ const CadastroApp = {
 
     card.style.display = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    this.showToast('Inscrição confirmada com sucesso!', 'success');
+    this.showToast('Inscrição gravada com sucesso!', 'success');
   },
 
   showToast(message, type = 'info') {
@@ -229,7 +201,7 @@ const CadastroApp = {
       toast.style.transform = 'translateX(100%)';
       toast.style.transition = 'all 0.25s ease';
       setTimeout(() => toast.remove(), 250);
-    }, 3500);
+    }, 3200);
   },
 
   escapeHtml(str) {

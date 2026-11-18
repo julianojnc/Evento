@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Evento Facom - Chaveamentos & Gestão do Torneio</title>
   <meta name="description" content="Gerenciamento de chaveamentos, partidas eliminatórias e participantes do Evento Facom.">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="/css/styles.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230f172a'/><text x='50%' y='68%' font-size='60' font-weight='800' fill='white' text-anchor='middle'>F</text></svg>">
 </head>
 <body>
@@ -17,10 +17,6 @@
   <header class="site-header">
     <div class="header-inner">
       <div style="display: flex; align-items: center; gap: 1rem;">
-        <a href="index.html" class="btn btn-outline btn-sm" title="Voltar para a página de inscrição">
-          <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-          Novo Cadastro
-        </a>
         <div class="brand">
           <div class="brand-icon">F</div>
           <div class="brand-text">
@@ -52,7 +48,7 @@
 
         <button class="nav-tab-btn" data-tab="dados" id="btn-tab-dados">
           <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Dados & JSON
+          API & JSON
         </button>
       </nav>
     </div>
@@ -61,7 +57,7 @@
   <!-- CONTEÚDO PRINCIPAL -->
   <main class="app-container">
 
-    <!-- BARRA DE STATUS RÁPIDO & AÇÕES -->
+    <!-- BARRA DE STATUS RÁPIDO & AÇÕES DA API -->
     <div class="quick-stats-bar">
       <div class="stats-items">
         <div class="stat-item">
@@ -79,17 +75,24 @@
             <p>Mesa de Dominó</p>
           </div>
         </div>
+
+        <div class="stat-item" style="border-left: 1px solid var(--border-light); padding-left: 1.25rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10b981;" id="api-status-dot"></span>
+            <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);" id="api-status-text">API Conectada</span>
+          </div>
+        </div>
       </div>
 
       <div class="quick-actions">
-        <button class="btn btn-outline btn-sm" id="btn-quick-sample" title="Carregar 8 equipes e 8 duplas prontas para teste rápido">
-          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-          Dados de Exemplo
+        <button class="btn btn-outline btn-sm" id="btn-refresh-api" title="Consultar novos cadastros da API no GitHub">
+          <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          Atualizar da API
         </button>
 
-        <button class="btn btn-outline btn-sm" id="btn-quick-export" title="Baixar arquivo JSON completo">
-          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Baixar JSON
+        <button class="btn btn-primary btn-sm" id="btn-push-api" title="Gravar e comitar os dados e chaveamento atuais diretamente na API">
+          <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Salvar na API
         </button>
       </div>
     </div>
@@ -178,53 +181,51 @@
     </section>
 
     <!-- ====================================================================
-         TELA 4: DADOS & BACKUP JSON
+         TELA 4: API & DADOS JSON
          ==================================================================== -->
     <section class="tab-pane" id="pane-dados">
       <div class="backup-grid">
-        <!-- Cartão de Ações -->
+        <!-- Cartão de Ações da API -->
         <div class="backup-card">
           <div class="backup-card-header">
-            <h3>Repositório & dados.json</h3>
-            <p>Os dados do Evento Facom são concentrados no arquivo <code>dados.json</code>. Você pode baixá-lo para enviar ao GitHub ou consumir diretamente de uma URL remota.</p>
+            <h3>Central da API REST (dados.json)</h3>
+            <p>O sistema consome e alimenta os dados diretamente pelo endpoint <code>/api/dados</code>, mantendo o arquivo <code>dados.json</code> sincronizado no repositório GitHub.</p>
           </div>
 
-          <!-- Sincronização via GitHub Raw -->
           <div style="background: var(--bg-subtle); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.25rem;">
-            <label class="form-label" for="input-github-url" style="margin-bottom: 0.25rem;">
-              URL do dados.json no GitHub (Raw)
-            </label>
-            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-              <input type="url" id="input-github-url" class="form-control" style="flex: 1; min-width: 220px;" placeholder="https://raw.githubusercontent.com/julianojnc/Evento/main/dados.json">
-              <button class="btn btn-outline btn-sm" id="btn-sync-github">
-                Consumir do GitHub
-              </button>
-              <button class="btn btn-primary btn-sm" id="btn-push-github" title="Comita os dados e chaveamentos atuais no GitHub">
-                Gravar Chaveamento no GitHub
-              </button>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">Endpoint Ativo:</span>
+              <span style="font-family: monospace; font-size: 0.82rem; background: var(--bg-surface); padding: 0.15rem 0.5rem; border-radius: var(--radius-xs); border: 1px solid var(--border-light);">GET / POST / PUT / DELETE /api/dados</span>
             </div>
-            <div class="form-help">Consuma os cadastros recebidos no GitHub ou salve o chaveamento atual direto no repositório.</div>
+            <p style="font-size: 0.78rem; color: var(--text-muted); line-height: 1.4;">
+              Conectado ao repositório <a href="https://github.com/julianojnc/Evento/blob/main/dados.json" target="_blank" style="color: var(--facom-accent); font-weight: 600; text-decoration: none;">julianojnc/Evento/dados.json</a>.
+            </p>
           </div>
 
           <div class="backup-actions-list">
-            <button class="btn btn-primary" id="btn-export-json">
-              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Baixar dados.json (Para o GitHub)
+            <button class="btn btn-primary" id="btn-save-api-full">
+              <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              Comitar Estado Atual no GitHub (API)
             </button>
 
-            <!-- Input invisível de arquivo -->
+            <button class="btn btn-outline" id="btn-reload-api">
+              <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              Forçar Recarregamento da API
+            </button>
+
+            <button class="btn btn-outline" id="btn-export-json">
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Baixar Cópia Local dados.json
+            </button>
+
+            <!-- Input invisível de arquivo para restauração -->
             <input type="file" id="input-import-file" accept=".json,application/json" style="display: none;">
             <button class="btn btn-outline" id="btn-trigger-import">
               <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-              Importar dados.json Local
+              Restaurar de Arquivo JSON
             </button>
 
-            <button class="btn btn-outline" id="btn-seed-sample">
-              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-              Carregar 8 Equipes e 8 Duplas de Teste
-            </button>
-
-            <button class="btn btn-danger-outline" id="btn-clear-all" style="margin-top: 1.5rem;">
+            <button class="btn btn-danger-outline" id="btn-clear-all" style="margin-top: 1.25rem;">
               <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
               Zerar Dados do Torneio
             </button>
@@ -235,17 +236,17 @@
         <div class="backup-card">
           <div class="backup-card-header">
             <h3>Estrutura Atual do dados.json</h3>
-            <p>Visualização instantânea dos dados consumidos e alimentados pela aplicação.</p>
+            <p>Visualização instantânea dos dados sincronizados pela API.</p>
           </div>
 
           <div class="json-viewer-container">
             <div class="json-viewer-header">
-              <span>dados.json</span>
+              <span>GET /api/dados</span>
               <button class="btn btn-ghost btn-sm" id="btn-copy-json" title="Copiar JSON para a área de transferência">
                 Copiar JSON
               </button>
             </div>
-            <pre class="json-pre" id="json-viewer-content">Carregando dados...</pre>
+            <pre class="json-pre" id="json-viewer-content">Carregando dados da API...</pre>
           </div>
         </div>
       </div>
@@ -268,8 +269,8 @@
   <div class="toast-container" id="toast-container"></div>
 
   <!-- SCRIPTS -->
-  <script src="js/storage.js"></script>
-  <script src="js/bracket.js"></script>
-  <script src="js/app.js"></script>
+  <script src="/js/storage.js"></script>
+  <script src="/js/bracket.js"></script>
+  <script src="/js/app.js"></script>
 </body>
 </html>

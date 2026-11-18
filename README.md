@@ -1,89 +1,41 @@
-# 🏆 Evento Facom - Torneios de Futebol & Dominó
+# 🏆 Evento Facom - API REST & Gestão de Torneios
 
-Sistema web minimalista para o **Evento Facom**, projetado para operar com alimentação e consumo centralizados no arquivo [`dados.json`](file:///c:/Users/juliano.nascimento.FACOM0/OneDrive%20-%20Facom%20F%20de%20Almeida%20Construções%20LTDA/Documentos/Fut-Domino/dados.json), pronto para hospedagem em repositório GitHub.
-
----
-
-## 🔒 Arquitetura de Páginas com Acesso Separado
-
-O sistema divide rigorosamente o público em **duas páginas independentes**:
-
-### 1. 📝 Página de Inscrição Pública: [`index.html`](file:///c:/Users/juliano.nascimento.FACOM0/OneDrive%20-%20Facom%20F%20de%20Almeida%20Construções%20LTDA/Documentos/Fut-Domino/index.html) (ou `cadastro.html`)
-- **Acesso Restrito:** Quem acessa esta página **NÃO tem links, botões ou acesso** para as outras telas (chaveamentos, participantes ou painel de dados).
-- **Campos Limpos e Diretos:**
-  - **⚽ Futebol:** Nome da Equipe, Capitão / Responsável e Lista de Atletas. *(Sem telefone e sem cor de uniforme).*
-  - **🁣 Dominó:** Nome da Dupla, Jogador 1 e Jogador 2. *(Sem telefone e sem setor).*
-- **Confirmação:** Ao enviar, exibe uma tela de confirmação de inscrição, permitindo nova inscrição e botão para baixar o `dados.json` atualizado.
-
-### 2. 🏆 Painel de Gestão e Chaveamento: [`torneio.html`](file:///c:/Users/juliano.nascimento.FACOM0/OneDrive%20-%20Facom%20F%20de%20Almeida%20Construções%20LTDA/Documentos/Fut-Domino/torneio.html)
-- **Área dos Organizadores:**
-  - **👥 Participantes:** Lista com busca em tempo real, edição e exclusão de equipes e duplas.
-  - **⚽ Chave Futebol:** Chaveamento eliminatório interativo (Mata-Mata) com avanço automático por clique no vencedor e pódio de campeão.
-  - **🁣 Chave Dominó:** Chaveamento mata-mata para as duplas de dominó.
-  - **💾 Repositório & dados.json:** Gerenciamento, download do `dados.json` para commit no GitHub e sincronização via URL Raw.
+Sistema web onde o arquivo [`dados.json`](https://github.com/julianojnc/Evento/blob/main/dados.json) funciona como uma **API REST completa** (banco de dados no GitHub) consumida e alimentada pelas telas de cadastro e chaveamento.
 
 ---
 
-## 🌐 Centralização em `dados.json` e Integração com GitHub
+## 🚀 Arquitetura de API REST (`/api/dados`)
 
-Todos os dados da aplicação estão estruturados em um único arquivo: [`dados.json`](file:///c:/Users/juliano.nascimento.FACOM0/OneDrive%20-%20Facom%20F%20de%20Almeida%20Construções%20LTDA/Documentos/Fut-Domino/dados.json).
+A aplicação agora possui um endpoint de backend na Vercel (`api/dados.js`) que transforma o arquivo `dados.json` do GitHub em uma API REST:
 
-```json
-{
-  "evento": "Evento Facom",
-  "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-17T15:30:00.000Z",
-  "futebol": {
-    "equipes": [
-      {
-        "id": "fut-1",
-        "nome": "Engenharia FC",
-        "capitao": "Carlos Eduardo",
-        "jogadores": ["Carlos Eduardo", "Marcos Santos", "Lucas Lima"]
-      }
-    ],
-    "chaveamento": null
-  },
-  "domino": {
-    "duplas": [
-      {
-        "id": "dom-1",
-        "nomeDupla": "Bucho de Sena",
-        "jogador1": "Seu Zé",
-        "jogador2": "Tonho"
-      }
-    ],
-    "chaveamento": null
-  }
-}
-```
-
-### Como funciona no GitHub:
-1. **No Repositório:** Coloque o arquivo `dados.json` na raiz do seu repositório GitHub.
-2. **Consumo Automático:**
-   - Na aba **Dados & JSON** de [`torneio.html`](file:///c:/Users/juliano.nascimento.FACOM0/OneDrive%20-%20Facom%20F%20de%20Almeida%20Construções%20LTDA/Documentos/Fut-Domino/torneio.html), você pode colar a URL Raw do seu arquivo no GitHub (ex: `https://raw.githubusercontent.com/SEU_USUARIO/SEU_REPO/main/dados.json`) e clicar em **"Consumir do GitHub"**.
-   - A aplicação salva e sincroniza as equipes e os chaveamentos instantaneamente.
-3. **Alimentação:** Sempre que novos cadastros forem feitos ou as partidas forem avançadas, clique em **"Baixar dados.json (Para o GitHub)"** para atualizar o arquivo no seu repositório.
+| Método | Endpoint | Ação | O que faz no GitHub |
+| :--- | :--- | :--- | :--- |
+| **GET** | `/api/dados` | **Consumir** | Retorna o `dados.json` atualizado em tempo real do repositório. |
+| **POST** | `/api/dados` | **Cadastrar** | Adiciona equipe ou dupla e realiza o **commit automático** no `dados.json`. |
+| **PUT** | `/api/dados` | **Atualizar** | Salva avanços de chaveamento, placares ou edições e comita no `dados.json`. |
+| **DELETE** | `/api/dados` | **Remover** | Exclui uma equipe ou dupla e comita a remoção no `dados.json`. |
 
 ---
 
-## 📁 Estrutura de Arquivos
+## 📱 Telas do Sistema
 
-```
-Fut-Domino/
-│
-├── dados.json          # Arquivo central consumido e alimentado pela aplicação
-├── index.html          # Página pública de cadastro (100% isolada, sem links para gestão)
-├── cadastro.html       # Alias direto para a página de cadastro
-├── torneio.html        # Painel do torneio (Participantes, Chaves e Sincronização)
-├── README.md           # Documentação completa
-│
-├── css/
-│   └── styles.css      # Design minimalista, responsivo e temas limpos
-│
-└── js/
-    ├── storage.js      # Consumo/alimentação de dados.json e suporte ao GitHub
-    ├── bracket.js      # Motor matemático de chaveamento, mata-mata e BYEs
-    ├── cadastro.js     # Lógica exclusiva e isolada da página de cadastro
-    └── app.js          # Lógica do painel de torneio, busca, modal e confetes
-```
+### 1. Inscrição Oficial (Pública & Isolada)
+- **URLs:** [`/index.html`](https://facom-evento.vercel.app/) ou [`/cadastro.html`](https://facom-evento.vercel.app/cadastro.html)
+- **Acesso Restrito:** O participante **não tem acesso** às outras telas.
+- **Funcionamento:** Ao preencher e confirmar, envia um `POST /api/dados`, gravando e comitando a inscrição no `dados.json` do GitHub.
+
+### 2. Painel de Chaveamento & Gestão (Organizadores)
+- **URLs:** [`/torneio`](https://facom-evento.vercel.app/torneio) ou [`/torneio.html`](https://facom-evento.vercel.app/torneio.html)
+- **Consumo Automático:** Ao abrir, consome via `GET /api/dados` trazendo os inscritos mais recentes do GitHub.
+- **Interatividade & Persistência:** Ao clicar para avançar um time no chaveamento ou registrar placar, o avanço é comitado via `PUT /api/dados`.
+- **Botão "Atualizar da API":** Recarrega instantaneamente se novos cadastros entrarem.
+
+---
+
+## 🔑 Configuração da Variável de Ambiente (Vercel)
+
+Para que a API consiga fazer commits no seu repositório:
+1. No painel da Vercel: **Settings ➔ Environment Variables**.
+2. Adicione:
+   - **Key:** `GITHUB_TOKEN`
+   - **Value:** Seu Personal Access Token do GitHub (com permissão `repo`).
