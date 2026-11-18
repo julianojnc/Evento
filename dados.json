@@ -1,22 +1,9 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-18T11:25:24.153Z",
+  "ultimaAtualizacao": "2026-11-18T11:25:26.032Z",
   "futebol": {
     "equipes": [
-      {
-        "id": "fut-8",
-        "nome": "Amigos do Churrasco",
-        "capitao": "Zezinho Gás",
-        "jogadores": [
-          "Zezinho Gás",
-          "Tião Carreiro",
-          "Pardinho Silva",
-          "Chitãozinho",
-          "Xororó"
-        ],
-        "dataCadastro": "2026-11-17T14:35:00.000Z"
-      },
       {
         "id": "futebol-mwlynuvl-yrdv",
         "nome": "Teste",
