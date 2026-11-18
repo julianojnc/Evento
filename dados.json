@@ -1,7 +1,7 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-18T11:26:14.063Z",
+  "ultimaAtualizacao": "2026-11-18T11:31:47.569Z",
   "futebol": {
     "equipes": [
       {
@@ -16,6 +16,19 @@
           "5"
         ],
         "dataCadastro": "2026-11-18T11:26:14.062Z"
+      },
+      {
+        "id": "futebol-mwm1jvg1-uzoh",
+        "nome": "Rose",
+        "capitao": "Rose",
+        "jogadores": [
+          "Nos",
+          "Eu",
+          "Vc",
+          "Todos",
+          "Perna de pau"
+        ],
+        "dataCadastro": "2026-11-18T11:31:47.569Z"
       }
     ],
     "chaveamento": null
