@@ -1,20 +1,13 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-18T11:25:47.957Z",
+  "ultimaAtualizacao": "2026-11-18T11:25:49.560Z",
   "futebol": {
     "equipes": [],
     "chaveamento": null
   },
   "domino": {
     "duplas": [
-      {
-        "id": "dom-5",
-        "nomeDupla": "Ases da Pedra",
-        "jogador1": "Juvenal",
-        "jogador2": "Arnaldo",
-        "dataCadastro": "2026-11-17T14:20:00.000Z"
-      },
       {
         "id": "dom-8",
         "nomeDupla": "Reis do Dominó",
