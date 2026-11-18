@@ -1,22 +1,9 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-18T11:25:03.593Z",
+  "ultimaAtualizacao": "2026-11-18T11:25:10.020Z",
   "futebol": {
     "equipes": [
-      {
-        "id": "fut-4",
-        "nome": "Planejamento City",
-        "capitao": "Diego Alves",
-        "jogadores": [
-          "Diego Alves",
-          "Júlio César",
-          "Everton Ribeiro",
-          "Pedro Rocha",
-          "Gerson Santos"
-        ],
-        "dataCadastro": "2026-11-17T14:15:00.000Z"
-      },
       {
         "id": "fut-5",
         "nome": "Logística United",
