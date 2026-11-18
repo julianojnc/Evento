@@ -1,7 +1,7 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-18T11:25:42.852Z",
+  "ultimaAtualizacao": "2026-11-18T11:25:44.605Z",
   "futebol": {
     "equipes": [],
     "chaveamento": null
@@ -21,13 +21,6 @@
         "jogador1": "Juvenal",
         "jogador2": "Arnaldo",
         "dataCadastro": "2026-11-17T14:20:00.000Z"
-      },
-      {
-        "id": "dom-6",
-        "nomeDupla": "Toca do Tatu",
-        "jogador1": "Tião",
-        "jogador2": "Chicão",
-        "dataCadastro": "2026-11-17T14:25:00.000Z"
       },
       {
         "id": "dom-7",
