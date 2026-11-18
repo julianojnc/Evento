@@ -1,22 +1,9 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-18T11:25:10.020Z",
+  "ultimaAtualizacao": "2026-11-18T11:25:16.390Z",
   "futebol": {
     "equipes": [
-      {
-        "id": "fut-5",
-        "nome": "Logística United",
-        "capitao": "Robson Lima",
-        "jogadores": [
-          "Robson Lima",
-          "Igor Rabello",
-          "Douglas Santos",
-          "Otávio Monteiro",
-          "Luan Peres"
-        ],
-        "dataCadastro": "2026-11-17T14:20:00.000Z"
-      },
       {
         "id": "fut-6",
         "nome": "Financeiro EC",
