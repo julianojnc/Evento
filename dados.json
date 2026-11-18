@@ -1,20 +1,13 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-18T11:25:37.905Z",
+  "ultimaAtualizacao": "2026-11-18T11:25:39.449Z",
   "futebol": {
     "equipes": [],
     "chaveamento": null
   },
   "domino": {
     "duplas": [
-      {
-        "id": "dom-1",
-        "nomeDupla": "Bucho de Sena",
-        "jogador1": "Seu Zé",
-        "jogador2": "Tonho",
-        "dataCadastro": "2026-11-17T14:00:00.000Z"
-      },
       {
         "id": "dom-2",
         "nomeDupla": "Caras de Pau",
