@@ -1,21 +1,13 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-18T11:25:49.560Z",
+  "ultimaAtualizacao": "2026-11-18T11:25:51.260Z",
   "futebol": {
     "equipes": [],
     "chaveamento": null
   },
   "domino": {
-    "duplas": [
-      {
-        "id": "dom-8",
-        "nomeDupla": "Reis do Dominó",
-        "jogador1": "Nelson",
-        "jogador2": "Sebastião",
-        "dataCadastro": "2026-11-17T14:35:00.000Z"
-      }
-    ],
+    "duplas": [],
     "chaveamento": null
   }
 }
