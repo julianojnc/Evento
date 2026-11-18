@@ -1,20 +1,13 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-18T11:25:41.276Z",
+  "ultimaAtualizacao": "2026-11-18T11:25:42.852Z",
   "futebol": {
     "equipes": [],
     "chaveamento": null
   },
   "domino": {
     "duplas": [
-      {
-        "id": "dom-2",
-        "nomeDupla": "Caras de Pau",
-        "jogador1": "Moacir",
-        "jogador2": "Valdir",
-        "dataCadastro": "2026-11-17T14:05:00.000Z"
-      },
       {
         "id": "dom-4",
         "nomeDupla": "Bateu Levou",
