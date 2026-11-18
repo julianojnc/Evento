@@ -1,23 +1,9 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-18T11:25:29.951Z",
+  "ultimaAtualizacao": "2026-11-18T11:25:37.905Z",
   "futebol": {
-    "equipes": [
-      {
-        "id": "futebol-mwlynuvl-yrdv",
-        "nome": "Teste",
-        "capitao": "A",
-        "jogadores": [
-          "1",
-          "2",
-          "3",
-          "4",
-          "5"
-        ],
-        "dataCadastro": "2026-11-18T10:10:54.609Z"
-      }
-    ],
+    "equipes": [],
     "chaveamento": null
   },
   "domino": {
