@@ -1,22 +1,9 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-18T11:31:47.569Z",
+  "ultimaAtualizacao": "2026-11-18T11:32:34.352Z",
   "futebol": {
     "equipes": [
-      {
-        "id": "futebol-mwm1cq3y-e0tq",
-        "nome": "Teste",
-        "capitao": "A",
-        "jogadores": [
-          "1",
-          "2",
-          "3",
-          "4",
-          "5"
-        ],
-        "dataCadastro": "2026-11-18T11:26:14.062Z"
-      },
       {
         "id": "futebol-mwm1jvg1-uzoh",
         "nome": "Rose",
