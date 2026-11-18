@@ -1,7 +1,7 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-18T11:25:44.605Z",
+  "ultimaAtualizacao": "2026-11-18T11:25:46.355Z",
   "futebol": {
     "equipes": [],
     "chaveamento": null
@@ -21,13 +21,6 @@
         "jogador1": "Juvenal",
         "jogador2": "Arnaldo",
         "dataCadastro": "2026-11-17T14:20:00.000Z"
-      },
-      {
-        "id": "dom-7",
-        "nomeDupla": "Sem Choro",
-        "jogador1": "Marcos",
-        "jogador2": "Ailton",
-        "dataCadastro": "2026-11-17T14:30:00.000Z"
       },
       {
         "id": "dom-8",
