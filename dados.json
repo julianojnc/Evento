@@ -1,22 +1,9 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-18T11:24:49.174Z",
+  "ultimaAtualizacao": "2026-11-18T11:25:03.593Z",
   "futebol": {
     "equipes": [
-      {
-        "id": "fut-3",
-        "nome": "Galácticos Facom",
-        "capitao": "Fernando Rocha",
-        "jogadores": [
-          "Fernando Rocha",
-          "Gustavo Scarpa",
-          "Renan Lodi",
-          "Matheus Cunha",
-          "Artur Victor"
-        ],
-        "dataCadastro": "2026-11-17T14:10:00.000Z"
-      },
       {
         "id": "fut-4",
         "nome": "Planejamento City",
