@@ -1,23 +1,9 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-18T10:10:54.609Z",
+  "ultimaAtualizacao": "2026-11-18T11:24:41.423Z",
   "futebol": {
     "equipes": [
-      {
-        "id": "fut-1",
-        "nome": "Engenharia FC",
-        "capitao": "Carlos Eduardo",
-        "jogadores": [
-          "Carlos Eduardo",
-          "Marcos Santos",
-          "Lucas Lima",
-          "Gabriel Souza",
-          "Rafael Dias",
-          "Bruno Henrique"
-        ],
-        "dataCadastro": "2026-11-17T14:00:00.000Z"
-      },
       {
         "id": "fut-2",
         "nome": "Operações & Obras",
