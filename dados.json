@@ -1,20 +1,13 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-18T11:25:46.355Z",
+  "ultimaAtualizacao": "2026-11-18T11:25:47.957Z",
   "futebol": {
     "equipes": [],
     "chaveamento": null
   },
   "domino": {
     "duplas": [
-      {
-        "id": "dom-4",
-        "nomeDupla": "Bateu Levou",
-        "jogador1": "Cláudio",
-        "jogador2": "Djalma",
-        "dataCadastro": "2026-11-17T14:15:00.000Z"
-      },
       {
         "id": "dom-5",
         "nomeDupla": "Ases da Pedra",
