@@ -1,22 +1,9 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-18T11:25:18.203Z",
+  "ultimaAtualizacao": "2026-11-18T11:25:24.153Z",
   "futebol": {
     "equipes": [
-      {
-        "id": "fut-7",
-        "nome": "Diretoria FC",
-        "capitao": "Henrique Fogaça",
-        "jogadores": [
-          "Henrique Fogaça",
-          "Érick Jacquin",
-          "Claude Troisgros",
-          "Rodrigo Hilbert",
-          "Felipe Bronze"
-        ],
-        "dataCadastro": "2026-11-17T14:30:00.000Z"
-      },
       {
         "id": "fut-8",
         "nome": "Amigos do Churrasco",
