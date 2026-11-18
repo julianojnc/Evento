@@ -1,22 +1,9 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-18T11:24:41.423Z",
+  "ultimaAtualizacao": "2026-11-18T11:24:49.174Z",
   "futebol": {
     "equipes": [
-      {
-        "id": "fut-2",
-        "nome": "Operações & Obras",
-        "capitao": "Marcelo Vieira",
-        "jogadores": [
-          "Marcelo Vieira",
-          "Thiago Silva",
-          "Rodrigo Caio",
-          "Danilo Neves",
-          "Alexandre Pato"
-        ],
-        "dataCadastro": "2026-11-17T14:05:00.000Z"
-      },
       {
         "id": "fut-3",
         "nome": "Galácticos Facom",
