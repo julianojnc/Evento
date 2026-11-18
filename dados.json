@@ -1,22 +1,9 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-18T11:25:16.390Z",
+  "ultimaAtualizacao": "2026-11-18T11:25:18.203Z",
   "futebol": {
     "equipes": [
-      {
-        "id": "fut-6",
-        "nome": "Financeiro EC",
-        "capitao": "Wesley Snipes",
-        "jogadores": [
-          "Wesley Snipes",
-          "Bebeto Silva",
-          "Romário Souza",
-          "Vampeta Oliveira",
-          "Edilson Capetinha"
-        ],
-        "dataCadastro": "2026-11-17T14:25:00.000Z"
-      },
       {
         "id": "fut-7",
         "nome": "Diretoria FC",
