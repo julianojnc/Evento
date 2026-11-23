@@ -1,7 +1,7 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-23T10:47:09.272Z",
+  "ultimaAtualizacao": "2026-11-23T10:51:02.244Z",
   "futebol": {
     "equipes": [
       {
@@ -16,6 +16,34 @@
           "Perna de pau"
         ],
         "dataCadastro": "2026-11-18T11:31:47.569Z"
+      },
+      {
+        "id": "futebol-mwt5apyc-6o33",
+        "nome": "Silicato",
+        "capitao": "Ronald",
+        "jogadores": [
+          "Thiago Lacerda",
+          "Ronald dos Santos",
+          "Gesiel Ferreira",
+          "Roberto Rodrigues",
+          "Vinicius Da Silva Barbosa",
+          "Arlison dos Santos",
+          "Marcos Vinicios",
+          "Edvan",
+          "Sebastião",
+          "Marcos Almeida",
+          "Wagner",
+          "Marcos Roberto",
+          "Roberto Souza Gones",
+          "Uelson",
+          "Lucas Da Silva",
+          "Rodrigo Santos",
+          "Valmir",
+          "Luan",
+          "Luis Felipe",
+          "Raul Da Silva Santos"
+        ],
+        "dataCadastro": "2026-11-23T10:51:02.244Z"
       }
     ],
     "chaveamento": null
