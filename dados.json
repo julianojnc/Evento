@@ -1,7 +1,7 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-18T11:32:34.352Z",
+  "ultimaAtualizacao": "2026-11-23T09:15:56.468Z",
   "futebol": {
     "equipes": [
       {
@@ -21,7 +21,15 @@
     "chaveamento": null
   },
   "domino": {
-    "duplas": [],
+    "duplas": [
+      {
+        "id": "domino-mwt1wfck-4lqe",
+        "nomeDupla": "VM.COM",
+        "jogador1": "Vagner",
+        "jogador2": "Marcos Roberto",
+        "dataCadastro": "2026-11-23T09:15:56.468Z"
+      }
+    ],
     "chaveamento": null
   }
 }
