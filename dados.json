@@ -1,7 +1,7 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-23T10:40:46.032Z",
+  "ultimaAtualizacao": "2026-11-23T10:42:16.736Z",
   "futebol": {
     "equipes": [
       {
@@ -42,6 +42,13 @@
         "jogador1": "Valdomiro jr",
         "jogador2": "Janair gomes",
         "dataCadastro": "2026-11-23T10:40:46.032Z"
+      },
+      {
+        "id": "domino-mwt4zggw-wpt8",
+        "nomeDupla": "Perreira fest",
+        "jogador1": "Marcos Pereira",
+        "jogador2": "Jhonatan",
+        "dataCadastro": "2026-11-23T10:42:16.736Z"
       }
     ],
     "chaveamento": null
