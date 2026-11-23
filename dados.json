@@ -1,7 +1,7 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-23T10:51:02.244Z",
+  "ultimaAtualizacao": "2026-11-23T11:51:27.784Z",
   "futebol": {
     "equipes": [
       {
@@ -84,6 +84,13 @@
         "jogador1": "Julio",
         "jogador2": "Sebastião",
         "dataCadastro": "2026-11-23T10:47:09.272Z"
+      },
+      {
+        "id": "domino-mwt7gffr-fvy7",
+        "nomeDupla": "Os imbatíveis",
+        "jogador1": "Valdemir vugo: panda",
+        "jogador2": "Genair vugo : feijão",
+        "dataCadastro": "2026-11-23T11:51:27.783Z"
       }
     ],
     "chaveamento": null
