@@ -1,7 +1,7 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-23T10:09:49.717Z",
+  "ultimaAtualizacao": "2026-11-23T10:40:46.032Z",
   "futebol": {
     "equipes": [
       {
@@ -35,6 +35,13 @@
         "jogador1": "Ranald santos",
         "jogador2": "Geisiel ferreira",
         "dataCadastro": "2026-11-23T10:09:49.717Z"
+      },
+      {
+        "id": "domino-mwt4xihc-xtlk",
+        "nomeDupla": "Valdomiro Jr & janair Gomes",
+        "jogador1": "Valdomiro jr",
+        "jogador2": "Janair gomes",
+        "dataCadastro": "2026-11-23T10:40:46.032Z"
       }
     ],
     "chaveamento": null
