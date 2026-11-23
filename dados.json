@@ -1,7 +1,7 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-23T11:51:27.784Z",
+  "ultimaAtualizacao": "2026-11-23T15:38:57.232Z",
   "futebol": {
     "equipes": [
       {
@@ -44,6 +44,15 @@
           "Raul Da Silva Santos"
         ],
         "dataCadastro": "2026-11-23T10:51:02.244Z"
+      },
+      {
+        "id": "futebol-mwtfkzf4-nbxu",
+        "nome": "Silicato",
+        "capitao": "Ronald",
+        "jogadores": [
+          "Kleber"
+        ],
+        "dataCadastro": "2026-11-23T15:38:57.232Z"
       }
     ],
     "chaveamento": null
