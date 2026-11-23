@@ -1,7 +1,7 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-23T10:42:16.736Z",
+  "ultimaAtualizacao": "2026-11-23T10:47:09.272Z",
   "futebol": {
     "equipes": [
       {
@@ -49,6 +49,13 @@
         "jogador1": "Marcos Pereira",
         "jogador2": "Jhonatan",
         "dataCadastro": "2026-11-23T10:42:16.736Z"
+      },
+      {
+        "id": "domino-mwt55q6w-b733",
+        "nomeDupla": "Equipe J.S",
+        "jogador1": "Julio",
+        "jogador2": "Sebastião",
+        "dataCadastro": "2026-11-23T10:47:09.272Z"
       }
     ],
     "chaveamento": null
