@@ -1,7 +1,7 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-23T09:15:56.468Z",
+  "ultimaAtualizacao": "2026-11-23T10:09:49.717Z",
   "futebol": {
     "equipes": [
       {
@@ -28,6 +28,13 @@
         "jogador1": "Vagner",
         "jogador2": "Marcos Roberto",
         "dataCadastro": "2026-11-23T09:15:56.468Z"
+      },
+      {
+        "id": "domino-mwt3tq51-2szm",
+        "nomeDupla": "Mengão",
+        "jogador1": "Ranald santos",
+        "jogador2": "Geisiel ferreira",
+        "dataCadastro": "2026-11-23T10:09:49.717Z"
       }
     ],
     "chaveamento": null
