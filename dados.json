@@ -1,7 +1,7 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-27T11:33:35.651Z",
+  "ultimaAtualizacao": "2026-11-27T11:42:31.581Z",
   "futebol": {
     "equipes": [
       {
@@ -107,6 +107,13 @@
         "jogador1": "Aurelio",
         "jogador2": "Amauri",
         "dataCadastro": "2026-11-27T11:33:35.651Z"
+      },
+      {
+        "id": "domino-mwywwcd9-utw7",
+        "nomeDupla": "Amauri/Aurélio",
+        "jogador1": "Amauri",
+        "jogador2": "Aurélio",
+        "dataCadastro": "2026-11-27T11:42:31.581Z"
       }
     ],
     "chaveamento": null
