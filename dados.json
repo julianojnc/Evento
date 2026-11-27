@@ -1,7 +1,7 @@
 {
   "evento": "Evento Facom",
   "versao": "1.0",
-  "ultimaAtualizacao": "2026-11-23T15:38:57.232Z",
+  "ultimaAtualizacao": "2026-11-27T11:33:35.651Z",
   "futebol": {
     "equipes": [
       {
@@ -100,6 +100,13 @@
         "jogador1": "Valdemir vugo: panda",
         "jogador2": "Genair vugo : feijão",
         "dataCadastro": "2026-11-23T11:51:27.783Z"
+      },
+      {
+        "id": "domino-mwywkuub-mvcl",
+        "nomeDupla": "Aurelio/Amauri",
+        "jogador1": "Aurelio",
+        "jogador2": "Amauri",
+        "dataCadastro": "2026-11-27T11:33:35.651Z"
       }
     ],
     "chaveamento": null
